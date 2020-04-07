@@ -1,10 +1,14 @@
 sumData <- function(date) {
-  if (date >= min(data_evolution$date)) {
+
+  if (date >= data_evolution$date[1]) {
+    data_recovered <- data_atDate(date)
+    freq_recovered <- count(data_recovered,vars= recovered)
+    freq_deceased <- count(data_recovered,vars = deceased)
     data <- data_atDate(date) %>% summarise(
       confirmed = sum(confirmed, na.rm = T),
-      recovered = sum(recovered, na.rm = T),
-      deceased  = sum(deceased, na.rm = T),
-      countries = n_distinct(`Country/Region`)
+      recovered = sum(freq_recovered[1,1], na.rm = T),
+      deceased  = sum(freq_deceased[1,1], na.rm = T),
+      countries = n_distinct(nombre_provincia)
     )
     return(data)
   }
@@ -26,7 +30,7 @@ key_figures <- reactive({
     "confirmed" = HTML(paste(format(data$confirmed, big.mark = " "), sprintf("<h4>(%+.1f %%)</h4>", data_new$new_confirmed))),
     "recovered" = HTML(paste(format(data$recovered, big.mark = " "), sprintf("<h4>(%+.1f %%)</h4>", data_new$new_recovered))),
     "deceased"  = HTML(paste(format(data$deceased, big.mark = " "), sprintf("<h4>(%+.1f %%)</h4>", data_new$new_deceased))),
-    "countries" = HTML(paste(format(data$countries, big.mark = " "), "/ 195", sprintf("<h4>(%+d)</h4>", data_new$new_countries)))
+    "countries" = HTML(paste(format(data$countries, big.mark = " "), "/ 24", sprintf("<h4>(%+d)</h4>", data_new$new_countries)))
   )
   return(keyFigures)
 })
@@ -34,9 +38,9 @@ key_figures <- reactive({
 output$valueBox_confirmed <- renderValueBox({
   valueBox(
     key_figures()$confirmed,
-    subtitle = "Confirmed",
+    subtitle = "Confirmados",
     icon     = icon("file-medical"),
-    color    = "light-blue",
+    color    = "red",
     width    = NULL
   )
 })
@@ -45,27 +49,27 @@ output$valueBox_confirmed <- renderValueBox({
 output$valueBox_recovered <- renderValueBox({
   valueBox(
     key_figures()$recovered,
-    subtitle = "Estimated Recoveries",
+    subtitle = "Recuperados",
     icon     = icon("heart"),
-    color    = "light-blue"
+    color    = "red"
   )
 })
 
 output$valueBox_deceased <- renderValueBox({
   valueBox(
     key_figures()$deceased,
-    subtitle = "Deceased",
+    subtitle = "Decesos",
     icon     = icon("heartbeat"),
-    color    = "light-blue"
+    color    = "red"
   )
 })
 
 output$valueBox_countries <- renderValueBox({
   valueBox(
     key_figures()$countries,
-    subtitle = "Affected Countries",
+    subtitle = "Provincias Afectadas",
     icon     = icon("flag"),
-    color    = "light-blue"
+    color    = "red"
   )
 })
 

@@ -1,8 +1,7 @@
 server <- function(input, output) {
   sourceDirectory("sections", recursive = TRUE)
 
-  showNotification("Attention: Johns Hopkins University does not provide recovered cases anymore. Therefore,
-  recovered cases are an estimation only. Please check the about section for more information.",
+  showNotification("ORIGINAL:  https://github.com/chschoenenberger/covid19_dashboard DATA: https://github.com/pablora19/COVID19_EC.",
     duration = 30, type = "error")
 
   # Trigger once an hour
