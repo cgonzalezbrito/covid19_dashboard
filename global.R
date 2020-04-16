@@ -58,9 +58,12 @@ location <- read_csv("data/EcLatLong.csv")
 
 data_confirmed <- merge(x=data_confirmed, y= location, by= "nombre_canton", all = TRUE)
 
+
 # # Get latest data
 current_date <- as.Date(data_confirmed[["fecha"]], format = "%d/%m/%y")
 changed_date <- file_info("data/covid19_data.zip")$change_time
+
+print(current_date)
 
 # # Get evolution data
 data_confirmed_sub <- data_confirmed %>%
@@ -69,7 +72,7 @@ data_confirmed_sub <- data_confirmed %>%
 
 data_recovered_sub <- data_confirmed %>%
   group_by(infografia, fecha, nombre_provincia, nombre_canton, Lat, Long) %>%
-  summarise("recovered" = sum(recuperados, na.rm = T))
+  summarise("recovered" = sum(`Alta hospitalaria`, na.rm = T))
 
 data_deceased_sub <- data_confirmed %>%
   group_by(infografia, fecha, nombre_provincia, Lat, Long) %>%

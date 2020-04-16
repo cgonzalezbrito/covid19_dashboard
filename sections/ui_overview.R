@@ -35,8 +35,8 @@ body_overview <- dashboardBody(
           "timeSlider",
           label      = "Select Date",
           min        = data_evolution$date[1],
-          max        = data_evolution$date[4976],
-          value      = data_evolution$date[4976],
+          max        = max(current_date),
+          value      = max(current_date),
           width      = "100%",
           timeFormat = "%d.%m.%Y",
           animate    = animationOptions(loop = TRUE)

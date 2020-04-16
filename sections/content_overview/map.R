@@ -17,7 +17,7 @@ addLabel <- function(data) {
 
 map <- leaflet() %>%
   setMaxBounds(-180, -90, 180, 90) %>%
-  setView(-85, -2, zoom = 6) %>%
+  setView(-85, -2, zoom = 7) %>%
   addTiles() %>%
   addProviderTiles(providers$CartoDB.Positron, group = "Light") %>%
   addProviderTiles(providers$HERE.satelliteDay, group = "Satellite") %>%
