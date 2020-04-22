@@ -17,13 +17,13 @@ addLabel <- function(data) {
 
 map <- leaflet() %>%
   setMaxBounds(-180, -90, 180, 90) %>%
-  setView(-85, -2, zoom = 7) %>%
+  setView(-78, -2, zoom = 7) %>%
   addTiles() %>%
   addProviderTiles(providers$CartoDB.Positron, group = "Light") %>%
   addProviderTiles(providers$HERE.satelliteDay, group = "Satellite") %>%
   addLayersControl(
     baseGroups    = c("Light", "Satellite"),
-    overlayGroups = c("nombre_canton", "nombre_provincia")
+    overlayGroups = c("nombre_provincia","nombre_canton")
   ) %>%
   # hideGroup("Confirmed (per capita)") %>%
   hideGroup("Confirmed") %>%
@@ -49,8 +49,9 @@ observe({
     addCircleMarkers(
       lng          = ~Long,
       lat          = ~Lat,
-      radius       = ~log(confirmed^(zoomLevel / 2)),
+      radius       = ~log(confirmed^(zoomLevel)),
       stroke       = FALSE,
+      #color        = "#00b3ff",
       fillOpacity  = 0.5,
       label        = ~label,
       labelOptions = labelOptions(textsize = 15),
@@ -59,58 +60,58 @@ observe({
     addCircleMarkers(
       lng          = ~Long,
       lat          = ~Lat,
-      radius       = ~log(confirmedPerCapita^(zoomLevel)),
+      radius       = ~log((confirmedPerCapita^(zoomLevel))),
       stroke       = FALSE,
       color        = "#00b3ff",
       fillOpacity  = 0.5,
       label        = ~label,
       labelOptions = labelOptions(textsize = 15),
       group        = "Confirmed (per capita)"
-    ) %>%
-    addCircleMarkers(
-      lng          = ~Long,
-      lat          = ~Lat,
-      radius       = ~log(recovered^(zoomLevel)),
-      stroke       = FALSE,
-      color        = "#005900",
-      fillOpacity  = 0.5,
-      label        = ~label,
-      labelOptions = labelOptions(textsize = 15),
-      group = "Recoveries"
-    ) %>%
-    addCircleMarkers(
-      lng          = ~Long,
-      lat          = ~Lat,
-      radius       = ~log(deceased^(zoomLevel)),
-      stroke       = FALSE,
-      color        = "#E7590B",
-      fillOpacity  = 0.5,
-      label        = ~label,
-      labelOptions = labelOptions(textsize = 15),
-      group        = "Deceased"
-    ) %>%
-    addCircleMarkers(
-      lng          = ~Long,
-      lat          = ~Lat,
-      radius       = ~log(active^(zoomLevel / 2)),
-      stroke       = FALSE,
-      color        = "#f49e19",
-      fillOpacity  = 0.5,
-      label        = ~label,
-      labelOptions = labelOptions(textsize = 15),
-      group        = "Active"
-    ) %>%
-    addCircleMarkers(
-      lng          = ~Long,
-      lat          = ~Lat,
-      radius       = ~log(activePerCapita^(zoomLevel)),
-      stroke       = FALSE,
-      color        = "#f4d519",
-      fillOpacity  = 0.5,
-      label        = ~label,
-      labelOptions = labelOptions(textsize = 15),
-      group        = "Active (per capita)"
-    )
+    ) #%>%
+    # addCircleMarkers(
+    #   lng          = ~Long,
+    #   lat          = ~Lat,
+    #   radius       = ~log(recovered^(zoomLevel)),
+    #   stroke       = FALSE,
+    #   color        = "#005900",
+    #   fillOpacity  = 0.5,
+    #   label        = ~label,
+    #   labelOptions = labelOptions(textsize = 15),
+    #   group = "Recoveries"
+    # ) %>%
+    # addCircleMarkers(
+    #   lng          = ~Long,
+    #   lat          = ~Lat,
+    #   radius       = ~log(deceased^(zoomLevel)),
+    #   stroke       = FALSE,
+    #   color        = "#E7590B",
+    #   fillOpacity  = 0.5,
+    #   label        = ~label,
+    #   labelOptions = labelOptions(textsize = 15),
+    #   group        = "Deceased"
+    # ) %>%
+    # addCircleMarkers(
+    #   lng          = ~Long,
+    #   lat          = ~Lat,
+    #   radius       = ~log(active^(zoomLevel / 2)),
+    #   stroke       = FALSE,
+    #   color        = "#f49e19",
+    #   fillOpacity  = 0.5,
+    #   label        = ~label,
+    #   labelOptions = labelOptions(textsize = 15),
+    #   group        = "Active"
+    # ) %>%
+    # addCircleMarkers(
+    #   lng          = ~Long,
+    #   lat          = ~Lat,
+    #   radius       = ~log(activePerCapita^(zoomLevel)),
+    #   stroke       = FALSE,
+    #   color        = "#f4d519",
+    #   fillOpacity  = 0.5,
+    #   label        = ~label,
+    #   labelOptions = labelOptions(textsize = 15),
+    #   group        = "Active (per capita)"
+    # )
 })
 
 output$overview_map <- renderLeaflet(map)
